@@ -1,0 +1,76 @@
+module init #(
+    parameter N = 32, // grid dimension
+    parameter DATA_WIDTH = 16
+)(
+    input clk, reset, start,
+
+    output weA, weB,
+    output [$clog2(N*N)-1 : 0] wAddrA, wAddrB,
+    output [DATA_WIDTH-1 : 0]  wDataA, wDataB,
+
+    output reg done
+);
+
+    reg started;
+
+    // global registers since BRAMs A and B mirror each other
+    reg we;
+    reg [$clog2(N*N)-1 : 0] addr;
+    wire [DATA_WIDTH-1 : 0]  data;
+
+    assign weA = we;
+    assign weB = we;
+    assign wAddrA = addr;
+    assign wAddrB = addr;
+    assign wDataA = data;
+    assign wDataB = data;
+
+
+    // compute addresses
+    wire [$clog2(N)-1 : 0] i, j;
+
+    assign i = addr[$clog2(N*N)-1 : $clog2(N)];
+    assign j = addr[$clog2(N)-1 : 0];
+
+
+    // assign cell value based on indices
+    assign data = (i == 0)   ? 16'h0100 :  // top
+                  (i == N-1) ? 16'h0000 :  // bottom
+                  (j == 0)   ? 16'h0000 :  // left
+                  (j == N-1) ? 16'h0000 :  // right
+                               16'h0000;   // interior
+
+
+
+    always @(posedge clk) begin
+        done <= 0;
+
+        // disable writes
+        if (reset) begin
+            started <= 0;
+            we <= 0;
+            addr <= 0;
+        end
+
+        // started state is loop condition
+        else if (start) begin
+            started <= 1;
+            we <= 1;
+        end
+
+        // main logic
+        else if (started) begin
+            // raise done flag and end after all addresses written
+            if (addr == N*N - 1) begin
+                started <= 0;
+                we <= 0;
+                addr <= 0;
+                done <= 1;
+            end
+            else begin
+                addr <= addr + 1;
+            end
+        end
+    end
+
+endmodule
