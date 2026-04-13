@@ -42,7 +42,13 @@ def solve_laplace_jacobi(N=50, max_iters=5000, tol=1e-4):
 
     return u
 
-u = solve_laplace_jacobi(N=50)
+# u = solve_laplace_jacobi(N=50)
+u = solve_laplace_jacobi(N=8, max_iters=1000, tol=5/256)
+
+with open('reference.hex', 'w') as f:
+    for val in u.flatten():
+        fixed = int(val * 256) & 0xFFFF
+        f.write(f'{fixed:04x}\n')
 
 plt.figure(figsize=(6, 5))
 plt.imshow(u, origin='upper', cmap='hot', interpolation='bilinear')
