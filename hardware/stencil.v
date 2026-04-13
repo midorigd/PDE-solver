@@ -8,8 +8,8 @@ module stencil #(
     wire [DATA_WIDTH+1 : 0] sum;
     wire [DATA_WIDTH-1 : 0] tempDelta;
 
+    // uNew = average of the four neighboring values
     assign sum = uAbove + uBelow + uLeft + uRight;
-
     assign uNew = sum[DATA_WIDTH+1 : 2];
 
     assign tempDelta = uNew - uCenter;

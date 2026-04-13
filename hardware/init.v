@@ -2,13 +2,12 @@ module init #(
     parameter N = 32, // grid dimension
     parameter DATA_WIDTH = 16
 )(
-    input clk, reset, start,
+    input clk, rst, start,
+    output reg done
 
     output weA, weB,
     output [$clog2(N*N)-1 : 0] wAddrA, wAddrB,
     output [DATA_WIDTH-1 : 0]  wDataA, wDataB,
-
-    output reg done
 );
 
     reg started;
@@ -16,7 +15,7 @@ module init #(
     // global registers since BRAMs A and B mirror each other
     reg we;
     reg [$clog2(N*N)-1 : 0] addr;
-    wire [DATA_WIDTH-1 : 0]  data;
+    wire [DATA_WIDTH-1 : 0] data;
 
     assign weA = we;
     assign weB = we;
@@ -46,7 +45,7 @@ module init #(
         done <= 0;
 
         // disable writes
-        if (reset) begin
+        if (rst) begin
             started <= 0;
             we <= 0;
             addr <= 0;

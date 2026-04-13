@@ -6,7 +6,7 @@ module jacobi #(
     parameter MAX_ITERS = 1000,
     parameter EPSILON = 16'h0005
 )(
-    input clk, reset, start,
+    input clk, rst, start,
     output reg done,
 
     // read ports
@@ -54,7 +54,9 @@ module jacobi #(
 
     // stencil module to find neighboring point averages and convergence
 
-    stencil stencilUnit(
+    stencil #(
+        .DATA_WIDTH(DATA_WIDTH)
+    ) stencilUnit (
         .uAbove(uAbove),
         .uBelow(uBelow),
         .uLeft(uLeft),
@@ -92,7 +94,7 @@ module jacobi #(
     always @(posedge clk) begin
         done <= 0;
 
-        if (reset) begin
+        if (rst) begin
             state <= IDLE;
             i <= 1;
             j <= 1;

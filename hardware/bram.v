@@ -3,12 +3,12 @@ module bram #(
     parameter DEPTH = 1024
 )(
     input clk, we,
-    input [$clog2(DEPTH) - 1:0] rAddr, wAddr,
-    input      [DATA_WIDTH - 1:0] wData,
-    output reg [DATA_WIDTH - 1:0] rData
+    input [$clog2(DEPTH)-1 : 0] rAddr, wAddr,
+    input      [DATA_WIDTH-1 : 0] wData,
+    output reg [DATA_WIDTH-1 : 0] rData
 );
 
-    reg [DATA_WIDTH - 1:0] mem [DEPTH - 1:0];
+    reg [DATA_WIDTH-1 : 0] mem [DEPTH-1 : 0];
 
     always @(posedge clk) begin
         if (we)

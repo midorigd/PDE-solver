@@ -84,7 +84,7 @@ module PDEsolver #(
         .wAddrB(initWAddrB),
         .wDataA(initWDataA),
         .wDataB(initWDataB)
-    )
+    );
 
     jacobi #(
         .N(N),
@@ -108,6 +108,6 @@ module PDEsolver #(
         .wAddrB(jacobiWAddrB),
         .wDataA(jacobiWDataA),
         .wDataB(jacobiWDataB)
-    )
+    );
 
 endmodule
