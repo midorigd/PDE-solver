@@ -1,7 +1,6 @@
 `include "bram.v"
 `include "init.v"
 `include "jacobi.v"
-`include "stencil.v"
 
 module PDEsolver #(
     parameter N = 32,

@@ -10,10 +10,10 @@ def solve_laplace_jacobi(N=50, max_iters=5000, tol=1e-4):
     u = np.zeros((N, N))
 
     # Apply boundary conditions
-    u[0, :]  = 1.0   # top edge
-    u[-1, :] = 0.0   # bottom edge
     u[:, 0]  = 0.0   # left edge
     u[:, -1] = 0.0   # right edge
+    u[-1, :] = 0.0   # bottom edge
+    u[0, :]  = 1.0   # top edge
 
     for iteration in range(max_iters):
         u_old = u.copy()
@@ -27,10 +27,10 @@ def solve_laplace_jacobi(N=50, max_iters=5000, tol=1e-4):
         )
 
         # Re-enforce boundary conditions (defensive)
-        u[0, :]  = 1.0
-        u[-1, :] = 0.0
         u[:, 0]  = 0.0
         u[:, -1] = 0.0
+        u[-1, :] = 0.0
+        u[0, :]  = 1.0
 
         # Convergence check
         delta = np.max(np.abs(u - u_old))
@@ -43,11 +43,12 @@ def solve_laplace_jacobi(N=50, max_iters=5000, tol=1e-4):
     return u
 
 # u = solve_laplace_jacobi(N=50)
-u = solve_laplace_jacobi(N=8, max_iters=1000, tol=5/256)
+u = solve_laplace_jacobi(N=8, max_iters=10)
 
-with open('reference.hex', 'w') as f:
+with open('hardware/reference.hex', 'w') as f:
     for val in u.flatten():
-        fixed = int(val * 256) & 0xFFFF
+        # fixed = int(val * 256) & 0xFFFF
+        fixed = int(round(val * 256)) & 0xFFFF
         f.write(f'{fixed:04x}\n')
 
 plt.figure(figsize=(6, 5))
@@ -57,5 +58,5 @@ plt.title("2D Laplace — Jacobi Iteration")
 plt.xlabel("x")
 plt.ylabel("y")
 plt.tight_layout()
-plt.savefig("laplace_solution.png", dpi=150)
+plt.savefig("reference/laplace_solution_test.png", dpi=150)
 plt.show()

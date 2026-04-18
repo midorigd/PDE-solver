@@ -3,11 +3,11 @@ module init #(
     parameter DATA_WIDTH = 16
 )(
     input clk, rst, start,
-    output reg done
+    output reg done,
 
     output weA, weB,
     output [$clog2(N*N)-1 : 0] wAddrA, wAddrB,
-    output [DATA_WIDTH-1 : 0]  wDataA, wDataB,
+    output [DATA_WIDTH-1 : 0]  wDataA, wDataB
 );
 
     reg started;

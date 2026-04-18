@@ -1,4 +1,9 @@
 .vscode/
 __pycache__/
 
+*.hex
+*.vvp
+
+laplace_solution_test.png
+
 .DS_Store

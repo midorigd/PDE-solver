@@ -10,13 +10,17 @@ module tb;
     reg clk, rst, start;
     wire done;
 
-    reg [DATA_WIDTH-1 : 0] refMem [N*N-1 : 0];
+    reg [DATA_WIDTH-1 : 0] refMem [0 : N*N-1];
     reg [DATA_WIDTH-1 : 0] hwVal;
     integer fd, errors, i;
 
     always #5 clk = ~clk;
 
-    PDEsolver #(.N(N)) dut (
+    PDEsolver #(
+        .N(N),
+        .MAX_ITERS(10),
+        .EPSILON(16'hFFFF)
+    ) dut (
         .clk(clk),
         .rst(rst),
         .start(start),
@@ -37,6 +41,9 @@ module tb;
         start = 1;
         @(posedge clk);
         start = 0;
+
+        // @(posedge dut.initDone);
+        // $stop;
 
         @(posedge done);
 
