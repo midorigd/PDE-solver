@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def solve_laplace_jacobi(N=50, max_iters=5000, tol=1e-4):
+def solve_laplace_jacobi(N=64, max_iters=1000, tol=1e-4):
     """
     Solve Laplace's equation on an NxN grid using Jacobi iteration.
     Boundary conditions: 
@@ -42,13 +42,12 @@ def solve_laplace_jacobi(N=50, max_iters=5000, tol=1e-4):
 
     return u
 
-# u = solve_laplace_jacobi(N=50)
-u = solve_laplace_jacobi(N=8, max_iters=10)
+u = solve_laplace_jacobi(tol=1/256)
 
 with open('hardware/reference.hex', 'w') as f:
     for val in u.flatten():
-        # fixed = int(val * 256) & 0xFFFF
-        fixed = int(round(val * 256)) & 0xFFFF
+        fixed = int(val * 256) & 0xFFFF
+        # fixed = int(round(val * 256)) & 0xFFFF
         f.write(f'{fixed:04x}\n')
 
 plt.figure(figsize=(6, 5))
