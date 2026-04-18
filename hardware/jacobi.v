@@ -113,37 +113,40 @@ module jacobi #(
                         state <= READ;
                 end
 
-                // read and latch each neighbor point (1-cycle latency)
+                // read and latch each neighbor point (2-cycle latency)
                 READ: begin
                     case (readCount)
                         0: rAddr <= ((i-1) << $clog2(N)) + j;
 
                         1: begin
                             rAddr <= ((i+1) << $clog2(N)) + j;
-                            uAbove <= rData;
                         end
 
                         2: begin
                             rAddr <= (i << $clog2(N)) + j-1;
-                            uBelow <= rData;
+                            uAbove <= rData;
                         end
 
                         3: begin
                             rAddr <= (i << $clog2(N)) + j+1;
-                            uLeft <= rData;
+                            uBelow <= rData;
                         end
 
                         4: begin
                             rAddr <= (i << $clog2(N)) + j;
-                            uRight <= rData;
+                            uLeft <= rData;
                         end
 
                         5: begin
+                            uRight <= rData;
+                        end
+
+                        6: begin
                             uCenter <= rData;
                         end
                     endcase
 
-                    if (readCount == 5) begin
+                    if (readCount == 6) begin
                         readCount <= 0;
                         state <= COMPUTE;
                     end else
