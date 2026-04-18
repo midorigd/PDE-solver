@@ -6,7 +6,12 @@ module PDEsolver #(
     parameter N = 32,
     parameter DATA_WIDTH = 16,
     parameter MAX_ITERS = 1000,
-    parameter EPSILON = 16'h0005
+    parameter EPSILON = 16'h0005,
+
+    parameter TOP_VAL    = (1 << (DATA_WIDTH/2)),
+    parameter BOTTOM_VAL = {DATA_WIDTH{1'b0}},
+    parameter LEFT_VAL   = {DATA_WIDTH{1'b0}},
+    parameter RIGHT_VAL  = {DATA_WIDTH{1'b0}}
 )(
     input clk, rst, start,
     output done
@@ -70,7 +75,12 @@ module PDEsolver #(
 
     init #(
         .N(N),
-        .DATA_WIDTH(DATA_WIDTH)
+        .DATA_WIDTH(DATA_WIDTH),
+
+        .TOP_VAL(TOP_VAL),
+        .BOTTOM_VAL(BOTTOM_VAL),
+        .LEFT_VAL(LEFT_VAL),
+        .RIGHT_VAL(RIGHT_VAL)
     ) initializer (
         .clk(clk),
         .rst(rst),

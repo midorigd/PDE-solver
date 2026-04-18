@@ -1,6 +1,11 @@
 module init #(
     parameter N = 32, // grid dimension
-    parameter DATA_WIDTH = 16
+    parameter DATA_WIDTH = 16,
+    
+    parameter TOP_VAL    = (1 << (DATA_WIDTH/2)),
+    parameter BOTTOM_VAL = {DATA_WIDTH{1'b0}},
+    parameter LEFT_VAL   = {DATA_WIDTH{1'b0}},
+    parameter RIGHT_VAL  = {DATA_WIDTH{1'b0}}
 )(
     input clk, rst, start,
     output reg done,
@@ -33,11 +38,11 @@ module init #(
 
 
     // assign cell value based on indices
-    assign data = (i == 0)   ? 16'h0100 :  // top
-                  (i == N-1) ? 16'h0000 :  // bottom
-                  (j == 0)   ? 16'h0000 :  // left
-                  (j == N-1) ? 16'h0000 :  // right
-                               16'h0000;   // interior
+    assign data = (i == 0)   ? TOP_VAL    :
+                  (i == N-1) ? BOTTOM_VAL :
+                  (j == 0)   ? LEFT_VAL   :
+                  (j == N-1) ? RIGHT_VAL  :
+                              {DATA_WIDTH{1'b0}};   // interior
 
 
 

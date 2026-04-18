@@ -42,13 +42,13 @@ def solve_laplace_jacobi(N=64, max_iters=1000, tol=1e-4):
 
     return u
 
-u = solve_laplace_jacobi(tol=1/256)
+u = solve_laplace_jacobi(N=32, tol=1/8192)
 
 with open('hardware/reference.hex', 'w') as f:
     for val in u.flatten():
-        fixed = int(val * 256) & 0xFFFF
+        fixed = int(val * 65536) & 0xFFFFFFFF
         # fixed = int(round(val * 256)) & 0xFFFF
-        f.write(f'{fixed:04x}\n')
+        f.write(f'{fixed:08x}\n')
 
 plt.figure(figsize=(6, 5))
 plt.imshow(u, origin='upper', cmap='hot', interpolation='bilinear')

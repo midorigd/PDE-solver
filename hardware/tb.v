@@ -4,10 +4,16 @@
 
 module tb;
 
-    localparam N = 64;
-    localparam DATA_WIDTH = 16;
+    localparam N = 32;
+    localparam DATA_WIDTH = 32;
     localparam MAX_ITERS = 1000;
-    localparam EPSILON = 16'h0001;
+    localparam EPSILON   = 32'h00000008;
+    localparam TOLERANCE = 32'h00000020;
+
+    localparam TOP_VAL    = (1 << (DATA_WIDTH/2));
+    localparam BOTTOM_VAL = {DATA_WIDTH{1'b0}};
+    localparam LEFT_VAL   = {DATA_WIDTH{1'b0}};
+    localparam RIGHT_VAL  = {DATA_WIDTH{1'b0}};
 
     reg clk, rst, start;
     wire done;
@@ -23,7 +29,12 @@ module tb;
         .N(N),
         .DATA_WIDTH(DATA_WIDTH),
         .MAX_ITERS(MAX_ITERS),
-        .EPSILON(EPSILON)
+        .EPSILON(EPSILON),
+
+        .TOP_VAL(TOP_VAL),
+        .BOTTOM_VAL(BOTTOM_VAL),
+        .LEFT_VAL(LEFT_VAL),
+        .RIGHT_VAL(RIGHT_VAL)
     ) dut (
         .clk(clk),
         .rst(rst),
@@ -62,8 +73,8 @@ module tb;
             if (diff[DATA_WIDTH])
                 diff = ~diff + 1;
 
-            if (diff > 16'h0008) begin
-                $display("cell=%d, ref=%h, actual=%h, delta=%h", i+1, refMem[i], hwVal, diff);
+            if (diff > TOLERANCE) begin
+                $display("addr=%0d, ref=%h, actual=%h, delta=%h", i+1, refMem[i], hwVal, diff);
                 errors = errors + 1;
             end
         end
