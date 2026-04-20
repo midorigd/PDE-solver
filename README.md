@@ -1,4 +1,4 @@
-# FPGA 2D Laplace Equation Solver
+# 2D Laplace Equation Solver
 
 A fully parametrized hardware implementation of a 2D Laplace equation solver using Jacobi iteration, written in Verilog and targeting FPGA synthesis. The design includes a complete RTL pipeline from boundary condition initialization through iterative stencil computation to convergence detection, verified against a floating-point Python reference.
 
@@ -6,7 +6,7 @@ A fully parametrized hardware implementation of a 2D Laplace equation solver usi
 
 ## Background
 
-### The Problem
+### Laplace's Equation
 
 Laplace's equation describes steady-state phenomena across physics and engineering — electrostatic potential, heat distribution, fluid flow, and more. In 2D:
 

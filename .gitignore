@@ -3,7 +3,9 @@ __pycache__/
 
 *.hex
 *.vvp
+*.vcd
 
 laplace_solution_test.png
 
+TODO
 .DS_Store

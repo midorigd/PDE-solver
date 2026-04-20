@@ -43,6 +43,9 @@ module tb;
     );
 
     initial begin
+        $dumpfile("tb.vcd");
+        $dumpvars(0, tb);
+
         clk = 0;
         rst = 0;
         start = 0;
